@@ -16,7 +16,7 @@ while True:
         try:
             response = openai.Completion.create(
               model="text-davinci-003",
-              prompt = prompt,
+              prompt=prompt,
               temperature=0.9,
               max_tokens=2000,
               frequency_penalty=0,
