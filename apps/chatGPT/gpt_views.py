@@ -23,7 +23,7 @@ async def query_gpt(form: QueryGPTForm):
     # restart_sequence = "Q: "
     try:
         response = openai.Completion.create(
-            model="text-ada-001",
+            model="text-curie-001",
             prompt=msg,
             temperature=0.9,
             max_tokens=200,
