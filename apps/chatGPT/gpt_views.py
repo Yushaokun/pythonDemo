@@ -26,7 +26,7 @@ async def query_gpt(form: QueryGPTForm):
             model="text-curie-001",
             prompt=msg,
             temperature=0.9,
-            max_tokens=200,
+            max_tokens=400,
             frequency_penalty=0,
             presence_penalty=0
         )
