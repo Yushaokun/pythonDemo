@@ -7,6 +7,6 @@ from utils.check_gpt_tokens import gpt_detail_notify2feishu
 
 def run_scheduler():
     scheduler = BlockingScheduler()
-    scheduler.add_job(gpt_detail_notify2feishu, 'interval', seconds=60)
+    scheduler.add_job(gpt_detail_notify2feishu, 'interval', seconds=60 * 60)
 
     scheduler.start()
