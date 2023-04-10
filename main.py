@@ -17,7 +17,7 @@ app.include_router(ws.router.router)
 app.mount('/static', StaticFiles(directory='static'), name='static')
 
 if __name__ == '__main__':
-    # run_scheduler()
+    run_scheduler()
 
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 8010
     workers = int(sys.argv[2]) if len(sys.argv) > 2 else 1
