@@ -29,7 +29,7 @@ async def query_gpt(form: QueryGPTForm):
             temperature=0.9,
             max_tokens=200,
             frequency_penalty=0,
-            presence_penalty=0
+            presence_penalty=0,
         )
         # print(start_sequence, response["choices"][0]["text"].strip())
         print(response)
