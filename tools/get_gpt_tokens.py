@@ -1,9 +1,13 @@
 # coding=utf8
+import os.path
+import sys
 
 import requests
 import datetime
-import settings
 
+
+sys.path.insert(0, os.path.abspath("."))
+import settings
 
 def get_gpt_tokens(apikey=settings.OPEN_API_KEY):
     # apikey = settings.OPEN_API_KEY
