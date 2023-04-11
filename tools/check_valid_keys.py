@@ -60,7 +60,10 @@ print(keys_list)
 
 valid_list_1 = []
 for key in keys_list:
-    if 'error' not in get_gpt_tokens(key):
+    response = get_gpt_tokens(key)
+    print(response)
+    
+    if 'error' not in response:
         valid_list_1.append(key)
 print(valid_list_1)
 
