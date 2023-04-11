@@ -115,18 +115,21 @@ print(valid_list_1)
 valid_list_2 = []
 for key in valid_list_1:
     openai.api_key = key
-    response = openai.Completion.create(
-        # model="text-curie-001",
-        model="text-davinci-003",
-        prompt="halo",
-        temperature=0.9,
-        max_tokens=200,
-        frequency_penalty=0,
-        presence_penalty=0,
-    )
-    print(response)
+    try:
+        response = openai.Completion.create(
+            # model="text-curie-001",
+            model="text-davinci-003",
+            prompt="halo",
+            temperature=0.9,
+            max_tokens=200,
+            frequency_penalty=0,
+            presence_penalty=0,
+        )
+        print(response)
 
-    if response['status'] == 'success':
-        valid_list_2.append(key)
+        if response['status'] == 'success':
+            valid_list_2.append(key)
+    except Exception:
+        continue
 
 print(valid_list_2)
