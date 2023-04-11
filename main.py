@@ -5,13 +5,11 @@ import fastapi
 import uvicorn
 from starlette.staticfiles import StaticFiles
 
-import ws.router
 from apps.router import router
 from scheduler.apscheduler_jobs import run_scheduler
 
 app = fastapi.FastAPI()
 app.include_router(router)
-app.include_router(ws.router.router)
 
 # 挂载静态资源
 app.mount('/static', StaticFiles(directory='static'), name='static')

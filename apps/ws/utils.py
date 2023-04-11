@@ -27,7 +27,7 @@ class ConnectionManager(metaclass=Singleton):
         self.active_connections.remove(ws)
 
     @staticmethod
-    async def send_personal_message(message: str, ws: WebSocket):
+    async def send_message(message: str, ws: WebSocket):
         # 发送个人消息
         await ws.send_text(message)
 

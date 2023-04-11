@@ -62,7 +62,7 @@ valid_list_1 = []
 for key in keys_list:
     response = get_gpt_tokens(key)
     print(response)
-    
+
     if 'error' not in response:
         valid_list_1.append(key)
 print(valid_list_1)
