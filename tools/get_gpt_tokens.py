@@ -5,7 +5,7 @@ import datetime
 import settings
 
 
-def get_gpt_tokens(apikey = settings.OPEN_API_KEY):
+def get_gpt_tokens(apikey=settings.OPEN_API_KEY):
     # apikey = settings.OPEN_API_KEY
 
     subscription_url = "https://api.openai.com/v1/dashboard/billing/subscription"
