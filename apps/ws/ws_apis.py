@@ -6,12 +6,13 @@ import openai
 from starlette.websockets import WebSocket, WebSocketDisconnect
 
 import settings
-from apps.ws.gpt_utils import GPTModel
-from apps.ws.ws_utils import ConnectionManager, WebSocketClient
+from apps.ws.gpt_utils import GPTModelType
+from apps.ws.ws_utils import ConnectionManager, GPTWebSocketClient
 
 router = fastapi.APIRouter()
 
 ws_manager = ConnectionManager()
+
 
 @router.websocket("/query_gpt/{model_type}")
 async def websocket_endpoint(websocket: WebSocket, model_type: int):
@@ -31,8 +32,11 @@ async def websocket_endpoint(websocket: WebSocket, model_type: int):
 
         print(f"GPT Model Type: {model_type}")
 
-
-        await ws_manager.maintain_conn(WebSocketClient(ws_id=str(uuid.uuid4()).replace('-', ''), ws=websocket, model_type=GPTModel(model_type)))
+        await ws_manager.maintain_gpt_conn(GPTWebSocketClient(
+            ws_id=str(uuid.uuid4()).replace('-', ''),
+            ws=websocket,
+            model_type=GPTModelType(model_type))
+        )
 
     except WebSocketDisconnect:
         ws_manager.disconnect(websocket)

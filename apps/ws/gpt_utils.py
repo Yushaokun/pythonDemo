@@ -7,18 +7,18 @@ import settings
 
 openai.api_key = settings.OPEN_API_KEY
 
-class GPTModel(Enum):
+class GPTModelType(Enum):
     TextCurie001 = 1
     TextDavinci003 = 2
 
 class GPTUtils:
     @classmethod
-    def gen_echo(cls, msg: str, model_type: GPTModel = GPTModel.TextCurie001, temperature=0.9, max_tokens=200,
+    def gen_echo(cls, msg: str, model_type: GPTModelType = GPTModelType.TextCurie001, temperature=0.9, max_tokens=200,
                  frequency_penalty=0, presence_penalty=0):
         model = 'text-ada-001'
-        if model_type == GPTModel.TextCurie001:
+        if model_type == GPTModelType.TextCurie001:
             model = 'text-curie-001'
-        elif model_type == GPTModel.TextDavinci003:
+        elif model_type == GPTModelType.TextDavinci003:
             model = 'text-davinci-003'
         else:
             pass

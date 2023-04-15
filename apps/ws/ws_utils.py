@@ -4,15 +4,16 @@ from typing import List
 
 from starlette.websockets import WebSocket
 
-from apps.ws.gpt_utils import GPTUtils, GPTModel
-
+from apps.ws.gpt_utils import GPTUtils, GPTModelType
 
 class WebSocketClient:
     ws_id: str
     ws: WebSocket
-    model_type: GPTModel
 
-    def __init__(self, ws_id: str, ws: WebSocket, model_type: GPTModel = GPTModel.TextCurie001):
+class GPTWebSocketClient(WebSocketClient):
+    model_type: GPTModelType
+
+    def __init__(self, ws_id: str, ws: WebSocket, model_type: GPTModelType = GPTModelType.TextCurie001):
         self.ws_id = ws_id
         self.ws = ws
         self.model_type = model_type
@@ -45,7 +46,7 @@ class ConnectionManager(metaclass=Singleton):
         # 发送个人消息
         await ws.send_text(message)
 
-    async def maintain_conn(self, ws_client: WebSocketClient):
+    async def maintain_gpt_conn(self, ws_client: GPTWebSocketClient):
         websocket, ws_id, model_type = ws_client.ws, ws_client.ws_id, ws_client.model_type
 
         while True:
