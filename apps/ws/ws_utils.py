@@ -6,9 +6,11 @@ from starlette.websockets import WebSocket
 
 from apps.ws.gpt_utils import GPTUtils, GPTModelType
 
+
 class WebSocketClient:
     ws_id: str
     ws: WebSocket
+
 
 class GPTWebSocketClient(WebSocketClient):
     model_type: GPTModelType
@@ -18,12 +20,15 @@ class GPTWebSocketClient(WebSocketClient):
         self.ws = ws
         self.model_type = model_type
 
+
 class Singleton(type):
     _instances = {}
+
     def __call__(cls, *args, **kwargs):
         if cls not in cls._instances:
             cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
+
 
 # 单例类
 class ConnectionManager(metaclass=Singleton):
@@ -50,8 +55,11 @@ class ConnectionManager(metaclass=Singleton):
         websocket, ws_id, model_type = ws_client.ws, ws_client.ws_id, ws_client.model_type
 
         while True:
-            # rec_msg = await websocket.receive_text()
             rec_json = await websocket.receive_json()
+
+            if rec_json == 'pong':
+                continue
+
             rec_msg = rec_json.get('msgContent', '')
 
             if not rec_msg:
@@ -59,13 +67,17 @@ class ConnectionManager(metaclass=Singleton):
             print(rec_msg)
 
             echo_msg = GPTUtils.gen_echo(msg=rec_msg, model_type=model_type)
-            await self.send_message(echo_msg, websocket)
+            echo_msg_json = json.dumps(echo_msg)
+            await self.send_message(echo_msg_json, websocket)
+
+    async def broadcast(self, message: str):
+        # 广播消息
+        for connection in self.active_connections:
+            await connection.send_text(message)
 
 
-
-    # async def broadcast(self, message: str):
-    #     # 广播消息
-    #     for connection in self.active_connections:
-    #         await connection.send_text(message)
-
-
+# 发送ping-pong
+async def ws_keep_alive():
+    print("send ping...")
+    cm = ConnectionManager()
+    await cm.broadcast('ping')

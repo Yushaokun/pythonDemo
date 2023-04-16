@@ -13,7 +13,7 @@ class GPTModelType(Enum):
 
 class GPTUtils:
     @classmethod
-    def gen_echo(cls, msg: str, model_type: GPTModelType = GPTModelType.TextCurie001, temperature=0.9, max_tokens=200,
+    def gen_echo(cls, msg: str, model_type: GPTModelType = GPTModelType.TextCurie001, temperature=0.9, max_tokens=2048,
                  frequency_penalty=0, presence_penalty=0):
         model = 'text-ada-001'
         if model_type == GPTModelType.TextCurie001:
