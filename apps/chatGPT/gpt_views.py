@@ -50,6 +50,7 @@ async def query_gpt(form: QueryGPTForm):
     msg = form.msgContent
     if not msg:
         return {"status": "fail", "msg": "请输入非空信息！"}
+    msg = msg.strip()
 
     print(form.msgContent)
 
