@@ -31,7 +31,7 @@ async def query_gpt_by_name(form: QueryGPTForm, model_name: str):
             model=model,
             prompt=msg,
             temperature=0.9,
-            max_tokens=4096,
+            max_tokens=2048,
             frequency_penalty=0,
             presence_penalty=0,
         )
