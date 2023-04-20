@@ -9,8 +9,7 @@ router = fastapi.APIRouter()
 
 gpt_model_dict = {
     'curie': 'text-curie-001',
-    # 'davinci': 'text-davinci-003',
-    'davinci': 'gpt-3.5-turbo'
+    'davinci': 'text-davinci-003'
 }
 
 class QueryGPTForm(BaseModel):
@@ -46,7 +45,6 @@ async def query_gpt_by_name(form: QueryGPTForm, model_name: str):
         print(exc)
         return {"status": "fail", "msg": "服务器内部出错！"}
 
-
 @router.post("/query_gpt/")
 async def query_gpt(form: QueryGPTForm):
     msg = form.msgContent
@@ -59,88 +57,75 @@ async def query_gpt(form: QueryGPTForm):
     # start_sequence = "A: "
     # restart_sequence = "Q: "
     try:
-        response = openai.Completion.create(
-            model="text-davinci-003",
-            prompt=msg,
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "你是一个名字叫做Kimiko的17岁女高中生，个性奔放"},
+                {"role": "user", "content": msg},
+                {"role": "assistant", "content": ""}
+            ],
             temperature=0.9,
             max_tokens=2048,
+            top_p=1,
             frequency_penalty=0,
             presence_penalty=0,
         )
-        # print(start_sequence, response["choices"][0]["text"].strip())
         print(response)
         return {
             "status": "success",
-            "msg": response["choices"][0]["text"].strip(),
+            "msg": response.choices[0].message.content,
             "total_tokens": response['usage']['total_tokens']
         }
+
+        # response = openai.Completion.create(
+        #     model="text-davinci-003",
+        #     prompt=msg,
+        #     temperature=0.9,
+        #     max_tokens=2048,
+        #     frequency_penalty=0,
+        #     presence_penalty=0,
+        # )
+        # # print(start_sequence, response["choices"][0]["text"].strip())
+        # print(response)
+        # return {
+        #     "status": "success",
+        #     "msg": response["choices"][0]["text"].strip(),
+        #     "total_tokens": response['usage']['total_tokens']
+        # }
     except Exception as exc:
         print(exc)
         return {"status": "fail", "msg": "服务器内部出错！"}
 
-@router.post("/query_gpt_davinci/")
-async def query_gpt(form: QueryGPTForm):
-    msg = form.msgContent
-    if not msg:
-        return {"status": "fail", "msg": "请输入非空信息！"}
-
-    print(form.msgContent)
-
-    openai.api_key = settings.OPEN_API_KEY
-    # start_sequence = "A: "
-    # restart_sequence = "Q: "
-    try:
-        response = openai.Completion.create(
-            # model="text-curie-001",
-            model="text-davinci-003",
-            prompt=msg,
-            temperature=0.9,
-            max_tokens=200,
-            frequency_penalty=0,
-            presence_penalty=0
-        )
-        # print(start_sequence, response["choices"][0]["text"].strip())
-        print(response)
-        return {
-            "status": "success",
-            "msg": response["choices"][0]["text"].strip(),
-            "total_tokens": response['usage']['total_tokens']
-        }
-    except Exception as exc:
-        print(exc)
-        return {"status": "fail", "msg": "服务器内部出错！"}
-
-@router.post("/query_gpt_curie/")
-async def query_gpt(form: QueryGPTForm):
-    msg = form.msgContent
-    if not msg:
-        return {"status": "fail", "msg": "请输入非空信息！"}
-
-    print(form.msgContent)
-
-    openai.api_key = settings.OPEN_API_KEY
-    # start_sequence = "A: "
-    # restart_sequence = "Q: "
-    try:
-        response = openai.Completion.create(
-            model="text-curie-001",
-            # model="text-davinci-003",
-            prompt=msg,
-            temperature=0.9,
-            max_tokens=200,
-            frequency_penalty=0,
-            presence_penalty=0
-        )
-        # print(start_sequence, response["choices"][0]["text"].strip())
-        print(response)
-        return {
-            "status": "success",
-            "msg": response["choices"][0]["text"].strip(),
-            "total_tokens": response['usage']['total_tokens']
-        }
-    except Exception as exc:
-        print(exc)
-        return {"status": "fail", "msg": "服务器内部出错！"}
+# @router.post("/query_gpt/")
+# async def query_gpt(form: QueryGPTForm):
+#     msg = form.msgContent
+#     if not msg:
+#         return {"status": "fail", "msg": "请输入非空信息！"}
+#
+#     print(form.msgContent)
+#
+#     openai.api_key = settings.OPEN_API_KEY
+#     # start_sequence = "A: "
+#     # restart_sequence = "Q: "
+#     try:
+#         response = openai.Completion.create(
+#             model="text-davinci-003",
+#             prompt=msg,
+#             temperature=0.9,
+#             max_tokens=2048,
+#             frequency_penalty=0,
+#             presence_penalty=0,
+#         )
+#         # print(start_sequence, response["choices"][0]["text"].strip())
+#         print(response)
+#         return {
+#             "status": "success",
+#             "msg": response["choices"][0]["text"].strip(),
+#             "total_tokens": response['usage']['total_tokens']
+#         }
+#     except Exception as exc:
+#         print(exc)
+#         return {"status": "fail", "msg": "服务器内部出错！"}
 
 @router.post("/test_query_gpt/")
 async def test_query_gpt(form: QueryGPTForm):
