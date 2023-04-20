@@ -53,18 +53,24 @@ async def query_gpt(form: QueryGPTForm):
 
     print(form.msgContent)
 
+    msgs = [{"role": "system", "content": "你是一个名字叫做Kimiko的17岁女高中生，个性奔放"}]
+    dialog_ctx = msg.split('\n')
+    for dia in dialog_ctx:
+        if dia.startswith("YOU:"):
+            msgs.append({"role": "user", "content": dia.strip("YOU:")})
+        else:
+            msgs.append({"role": "assistant", "content": dia})
+
+    print(msgs)
+
     openai.api_key = settings.OPEN_API_KEY
     # start_sequence = "A: "
     # restart_sequence = "Q: "
     try:
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "你是一个名字叫做Kimiko的17岁女高中生，个性奔放"},
-                {"role": "user", "content": msg},
-                {"role": "assistant", "content": ""}
-            ],
-            temperature=0.9,
+            messages=msgs,
+            temperature=0.6,
             max_tokens=2048,
             top_p=1,
             frequency_penalty=0,
