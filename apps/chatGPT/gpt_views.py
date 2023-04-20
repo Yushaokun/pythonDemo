@@ -54,13 +54,12 @@ async def query_gpt(form: QueryGPTForm):
 
     print(form.msgContent)
 
-    ai_profile = {"role": "system", "content": "你是一个名字叫做Kimiko的17岁女高中生，个性奔放"}
     msgs = []
-    # msgs = [{"role": "system", "content": "你是一个名字叫做Kimiko的17岁女高中生，个性奔放"}]
+    ai_profile = {"role": "system", "content": "你是一个名字叫做Kimiko的17岁女高中生，个性奔放"}
+    msgs.append(ai_profile)
     dialog_ctx = msg.split('\n')
     for dia in dialog_ctx:
         if dia.startswith("YOU:"):
-            msgs.append(ai_profile)
             msgs.append({"role": "user", "content": dia.strip("YOU:")})
         else:
             msgs.append({"role": "assistant", "content": dia})
