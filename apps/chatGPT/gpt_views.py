@@ -9,7 +9,8 @@ router = fastapi.APIRouter()
 
 gpt_model_dict = {
     'curie': 'text-curie-001',
-    'davinci': 'text-davinci-003'
+    # 'davinci': 'text-davinci-003',
+    'davinci': 'gpt-3.5-turbo'
 }
 
 class QueryGPTForm(BaseModel):
@@ -59,11 +60,10 @@ async def query_gpt(form: QueryGPTForm):
     # restart_sequence = "Q: "
     try:
         response = openai.Completion.create(
-            # model="text-curie-001",
             model="text-davinci-003",
             prompt=msg,
             temperature=0.9,
-            max_tokens=200,
+            max_tokens=2048,
             frequency_penalty=0,
             presence_penalty=0,
         )
