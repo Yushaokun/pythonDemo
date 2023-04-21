@@ -10,7 +10,8 @@ router = fastapi.APIRouter()
 
 gpt_model_dict = {
     'curie': 'text-curie-001',
-    'davinci': 'text-davinci-003'
+    'davinci': 'text-davinci-003',
+    'gpt-3.5-turbo': 'gpt-3.5-turbo'
 }
 
 class QueryGPTForm(BaseModel):
@@ -28,20 +29,54 @@ async def query_gpt_by_name(form: QueryGPTForm, model_name: str):
     openai.api_key = settings.OPEN_API_KEY
 
     try:
-        response = openai.Completion.create(
-            model=model,
-            prompt=msg,
-            temperature=0.9,
-            max_tokens=2048,
-            frequency_penalty=0,
-            presence_penalty=0,
-        )
-        print(response)
-        return {
-            "status": "success",
-            "msg": response["choices"][0]["text"].strip(),
-            "total_tokens": response['usage']['total_tokens']
-        }
+        if model in ['text-curie-001', 'text-davinci-003']:
+            response = openai.Completion.create(
+                model=model,
+                prompt=msg,
+                temperature=0.9,
+                max_tokens=2048,
+                frequency_penalty=0,
+                presence_penalty=0,
+            )
+            print(response)
+            return {
+                "status": "success",
+                "msg": response["choices"][0]["text"].strip(),
+                "total_tokens": response['usage']['total_tokens']
+            }
+
+        elif model == 'gpt-3.5-turbo':
+            msgs = []
+            ai_profile = {"role": "system", "content": CUTE}
+            msgs.append(ai_profile)
+
+            dialog_ctx = msg.split('\n')
+            for dia in dialog_ctx:
+                if dia.startswith("YOU:"):
+                    msgs.append({"role": "user", "content": dia.strip("YOU:")})
+                else:
+                    msgs.append({"role": "assistant", "content": dia})
+
+            print(msgs)
+
+            response = openai.ChatCompletion.create(
+                model=model,
+                messages=msgs,
+                temperature=0.6,
+                max_tokens=2048,
+                top_p=1,
+                frequency_penalty=0,
+                presence_penalty=0,
+            )
+            print(response)
+            return {
+                "status": "success",
+                "msg": response.choices[0].message.content,
+                "total_tokens": response['usage']['total_tokens']
+            }
+
+        else:
+            raise NotImplementedError
     except Exception as exc:
         print(exc)
         return {"status": "fail", "msg": "服务器内部出错！"}
