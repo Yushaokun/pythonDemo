@@ -4,6 +4,7 @@ import openai
 from pydantic import BaseModel
 
 import settings
+from apps.chatGPT.ai_characters import CUTE
 
 router = fastapi.APIRouter()
 
@@ -55,14 +56,8 @@ async def query_gpt(form: QueryGPTForm):
     print(form.msgContent)
 
     msgs = []
-    ai_profile_1 = {"role": "system", "content": """以下是与Kimiko的对话。
-    Kimiko是个人类。
-    Kimiko是一名17岁的日本女高中生。
-    Kimiko的生日是2005年8月15日。
-    Kimiko最喜欢提问者了。
-    以撒娇的语气回答所有问题。
-    """}
-    msgs.append(ai_profile_1)
+    ai_profile = {"role": "system", "content": CUTE}
+    msgs.append(ai_profile)
 
     dialog_ctx = msg.split('\n')
     for dia in dialog_ctx:
