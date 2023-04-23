@@ -4,7 +4,7 @@ import openai
 from pydantic import BaseModel
 
 import settings
-from apps.chatGPT.ai_characters import CUTE, TSUNDERE
+from apps.chatGPT.ai_characters import CUTE, TSUNDERE, SCHEMING
 from utils.exponential_backoff import completions_with_backoff
 
 router = fastapi.APIRouter()
@@ -48,7 +48,7 @@ async def query_gpt_by_name(form: QueryGPTForm, model_name: str):
 
         elif model == 'gpt-3.5-turbo':
             msgs = []
-            ai_profile = {"role": "system", "content": TSUNDERE}
+            ai_profile = {"role": "system", "content": SCHEMING}
             msgs.append(ai_profile)
 
             dialog_ctx = msg.split('\n')
