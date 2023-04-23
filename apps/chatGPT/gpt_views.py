@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 import settings
 from apps.chatGPT.ai_characters import CUTE, TSUNDERE
+from utils.exponential_backoff import completion_with_backoff
 
 router = fastapi.APIRouter()
 
@@ -59,7 +60,17 @@ async def query_gpt_by_name(form: QueryGPTForm, model_name: str):
 
             print(msgs)
 
-            response = openai.ChatCompletion.create(
+            # response = openai.ChatCompletion.create(
+            #     model=model,
+            #     messages=msgs,
+            #     temperature=0.6,
+            #     max_tokens=2048,
+            #     top_p=1,
+            #     frequency_penalty=0,
+            #     presence_penalty=0,
+            # )
+
+            response = completion_with_backoff(**dict(
                 model=model,
                 messages=msgs,
                 temperature=0.6,
@@ -67,7 +78,8 @@ async def query_gpt_by_name(form: QueryGPTForm, model_name: str):
                 top_p=1,
                 frequency_penalty=0,
                 presence_penalty=0,
-            )
+            ))
+
             print(response)
             return {
                 "status": "success",
