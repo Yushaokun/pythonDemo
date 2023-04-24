@@ -48,7 +48,7 @@ async def query_gpt_by_name(form: QueryGPTForm, model_name: str):
 
         elif model == 'gpt-3.5-turbo':
             msgs = []
-            ai_profile = {"role": "system", "content": DOMINEERING_LADY}
+            ai_profile = {"role": "system", "content": GIRLY_GIRL}
             msgs.append(ai_profile)
 
             dialog_ctx = msg.split('\n')
@@ -103,7 +103,7 @@ async def query_gpt(form: QueryGPTForm):
     print(form.msgContent)
 
     msgs = []
-    ai_profile = {"role": "system", "content": GIRLY_GIRL}
+    ai_profile = {"role": "system", "content": MUSHIN}
     msgs.append(ai_profile)
 
     dialog_ctx = msg.split('\n')
