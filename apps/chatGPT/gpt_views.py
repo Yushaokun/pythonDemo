@@ -103,7 +103,7 @@ async def query_gpt(form: QueryGPTForm):
     print(form.msgContent)
 
     msgs = []
-    ai_profile = {"role": "system", "content": CORKY}
+    ai_profile = {"role": "system", "content": YANDERE}
     msgs.append(ai_profile)
 
     dialog_ctx = msg.split('\n')
