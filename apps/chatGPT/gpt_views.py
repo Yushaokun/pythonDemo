@@ -4,7 +4,8 @@ import openai
 from pydantic import BaseModel
 
 import settings
-from apps.chatGPT.ai_characters import GIRLY_GIRL, TSUNDERE, SCHEMING, MUSHIN, CORKY, YANDERE, DOMINEERING_LADY
+from apps.chatGPT.ai_characters import GIRLY_GIRL, TSUNDERE, SCHEMING, MUSHIN, CORKY, YANDERE, DOMINEERING_LADY, \
+    VIGOUR_GIRL
 from utils.exponential_backoff import completions_with_backoff
 
 router = fastapi.APIRouter()
@@ -103,7 +104,7 @@ async def query_gpt(form: QueryGPTForm):
     print(form.msgContent)
 
     msgs = []
-    ai_profile = {"role": "system", "content": DOMINEERING_LADY}
+    ai_profile = {"role": "system", "content": VIGOUR_GIRL}
     msgs.append(ai_profile)
 
     dialog_ctx = msg.split('\n')
