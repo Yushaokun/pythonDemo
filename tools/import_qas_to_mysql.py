@@ -20,9 +20,9 @@ session = Session()
 Base = declarative_base()
 
 class QAsType(Enum):
-    CHOICE = 0
+    JUDGEMENT = 0
     COMPLETION = 1
-    JUDGEMENT = 2
+    CHOICE = 2
 
 
 class QA(Base):
@@ -48,7 +48,7 @@ with open('.\\tools\\题库01.txt', 'r', encoding='utf8') as f:
 
             ans = strs[0][-2]
             point = 1
-            topic_type = QAsType.JUDGEMENT.value
+            topic_type = QAsType.CHOICE.value
 
             session.add(QA(
                 UUID=uuid.uuid1(),
@@ -76,7 +76,7 @@ with open('.\\tools\\题库02.txt', 'r', encoding='utf8') as f:
 
             ans = strs[0][-2]
             point = 1
-            topic_type = QAsType.JUDGEMENT.value
+            topic_type = QAsType.CHOICE.value
 
             session.add(QA(
                 UUID=uuid.uuid1(),
